@@ -31,7 +31,7 @@
                 </button>
                 <div v-if="mostrarEditFinal">
                     <input type="text" v-model="guarda"/>
-                    <input type="submit" v-on:click="componentTemp.text = guarda;mostrarEditar=false;mostrarMain=true"/>
+                    <input type="submit" v-on:click="if(guarda.length>0){componentTemp.text = guarda}else{alert('Error: No puedes dejar el campo vacio');};mostrarEditar=false;mostrarMain=true"/>
                 </div>
            </div>
         </div>

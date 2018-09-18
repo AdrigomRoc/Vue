@@ -15,7 +15,11 @@ new Vue({
     },
     methods:{
         guardarTarea: function(tarea){
-            this.llista.push({text:tarea});
+            if(tarea.length>0){
+                this.llista.push({text:tarea});
+            }else{
+                alert("Error: Escribe algo antes de añadir la tarea");
+            }
         },
         eliminarTarea: function(index){
             this.llista.splice(index,1);
@@ -23,7 +27,7 @@ new Vue({
         editarTarea: function(index){
             this.mostrarEditar=true;
             this.mostrarMain=false;
-            this.guarda=this.llista.text;
+            this.guarda=this.llista.text;           
         },
         editarContenido: function(){
             this.mostrarEditFinal=true;
