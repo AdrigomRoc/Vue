@@ -3,13 +3,15 @@
     <head>
         <meta charset="utf-8">
         <title>Lasertag con Vue</title>
-        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <script src="Vue.js"></script>
         <link href="lasertag.css" rel="stylesheet" type="text/css" >
     </head>
     <body>
         <div id="app">
-            <div id="Main">
-            <table>
+            <!---------------------------------------------------------MAIN--------------------------------------------------------->
+            <div id="Main" v-if="MostrarMain">
+                <h2>Podio</h2>
+            <table id="Podio">
                 <tr>
                     <th>Usuario</th>
                     <th>Partidas</th>
@@ -21,6 +23,103 @@
                     <td> {{campo.punts}}</td>
                 </tr>
             </table>
+            <br/>
+            <br/>
+            <table class="boton">
+                        <tr>
+                            <td><input type="button" v-on:click="MostrarMain=false;MostrarRegistrar=true" value="Registrar Usuario"/></td>
+                            <td><input type="button" v-on:click="MostrarMain=false;MostrarPartida=true" value="Crear partida"/></td>
+                        </tr>
+            </table> 
+            </div>
+            <!------------------------------------------------------REGISTRAR------------------------------------------------------->
+            <div id="Registrar" v-if="MostrarRegistrar">
+                <h2>Creación de usarios</h2>
+                <br/>
+                <br/>
+                Nombre:<br/>
+                <input type="text"/>
+                <br/>Apellido <br/>
+                <input type="text"/>
+                <br/>Correo: <br/>
+                <input type="email"/>
+                <hr/>
+                <table class="boton">
+                    <tr>
+                        <td><input type="submit" value="Registrar"/></td>
+                        <td><input type="submit" v-on:click="MostrarMain=true;MostrarRegistrar=false" value="Tornar al main"/></td>
+                    </tr>
+                </table>
+            </div>
+            <!-------------------------------------------------------PARTIDA-------------------------------------------------------->
+            <div id="Partida" v-if="MostrarPartida">
+                <h2>Partida</h2>
+                Equipo azul:
+                <div class="teamblue">
+                  Jugador 1: 
+                  <select>
+                        <option selected="true" disabled="disabled">Seleccione un jugador</option>
+                        <option v-for="(campo,index) in ordenarArray" value="{{campo.usuario}}">{{campo.usuario}}</option>
+                  </select>
+                  <br/>Jugador 2: 
+                  <select>
+                        <option selected="true" disabled="disabled">Seleccione un jugador</option>
+                        <option v-for="(campo,index) in ordenarArray" value="{{campo.usuario}}">{{campo.usuario}}</option>
+                  </select>
+                  <br/>Jugador 3: 
+                  <select> 
+                        <option selected="true" disabled="disabled">Seleccione un jugador</option>
+                        <option v-for="(campo,index) in ordenarArray" value="{{campo.usuario}}">{{campo.usuario}}</option>
+                  </select>
+                  <br/>Jugador 4: 
+                  <select>
+                        <option selected="true" disabled="disabled">Seleccione un jugador</option>
+                        <option v-for="(campo,index) in ordenarArray" value="{{campo.usuario}}">{{campo.usuario}}</option>
+                  </select>
+                  <br/>Jugador 5: 
+                  <select> 
+                        <option selected="true" disabled="disabled">Seleccione un jugador</option>
+                        <option v-for="(campo,index) in ordenarArray" value="{{campo.usuario}}">{{campo.usuario}}</option>
+                  </select>
+                </div>
+                Equipo rojo:
+                <div class="teamred">
+                        Jugador 1: 
+                          <select>
+                                <option selected="true" disabled="disabled">Seleccione un jugador</option>
+                                <option v-for="(campo,index) in ordenarArray" value="{{campo.usuario}}">{{campo.usuario}}</option>
+                          </select>
+                          <br/>Jugador 2: 
+                          <select>
+                                <option selected="true" disabled="disabled">Seleccione un jugador</option>
+                                <option v-for="(campo,index) in ordenarArray" value="{{campo.usuario}}">{{campo.usuario}}</option>
+                          </select>
+                          <br/>Jugador 3: 
+                          <select> 
+                                <option selected="true" disabled="disabled">Seleccione un jugador</option>
+                                <option v-for="(campo,index) in ordenarArray" value="{{campo.usuario}}">{{campo.usuario}}</option>
+                          </select>
+                          <br/>Jugador 4: 
+                          <select>
+                                <option selected="true" disabled="disabled">Seleccione un jugador</option>
+                                <option v-for="(campo,index) in ordenarArray" value="{{campo.usuario}}">{{campo.usuario}}</option>
+                          </select>
+                          <br/>Jugador 5: 
+                          <select> 
+                                <option selected="true" disabled="disabled">Seleccione un jugador</option>
+                                <option v-for="(campo,index) in ordenarArray" value="{{campo.usuario}}">{{campo.usuario}}</option>
+                          </select>
+                      </div>
+                      <hr id="partida"/>
+                      <table class="boton">
+                          <tr>
+                              <td><input type="submit" v-on:click="acabar=true" value="Empezar"/></td>
+                              <td v-if="acabar"><input type="submit" value="Acabar"/></td>
+                              <td><input type="submit"  v-on:click="MostrarMain=true;MostrarPartida=false" value="Tornar al main"/></td>
+                          </tr>
+                      </table>
+                      
+                      
             </div>
         </div>
         <script src="lasertag.js"></script>

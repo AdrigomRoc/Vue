@@ -1,3 +1,35 @@
 div#app>div{
-    background-color: rgba(255, 255, 10, 0.3)
+    background-color: rgba(255, 255, 10, 0.3);
+    text-align: center;
+    margin: 0 auto;
+    width: 50%;
+    height: 400px;
+    padding-top: 10px;
+    margin-top:10px;
+}
+table#Podio{
+    margin: 0 auto;
+    padding-top: 20px;
+}
+table.boton{
+    width: 100%;
+
+}
+div#Registrar>hr{
+    margin-top: 100px;
+}
+.teamred,.teamblue{
+    border:1px black solid;
+    margin: 0 auto;
+    width: 50%;
+    padding: 5px;
+}
+.teamblue{
+    background-color: rgba(93, 209, 255, 0.534);
+}
+.teamred{
+    background-color: rgba(187, 0, 0, 0.411);
+}
+hr.partida{
+    margin-top: 20px;
 }

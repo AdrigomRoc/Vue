@@ -9,9 +9,20 @@ new Vue({
             { usuario:'Sandra', partidas:3, punts:70},
             { usuario:'Andres', partidas:3, punts:50},
             ],
+            MostrarMain:true,
+            MostrarRegitrar:false,
+            MostrarPartida:false,
+            empezar:false,
+            acabar:false,
+            equipoAzul:false,
+            equipoRojo:false
     },
     methods:{
-
+        EmpezarPartida: function(){
+            if(equipoAzul && equipoRojo){
+                acabar=true;
+            }
+        }
     },
     computed:{
         ordenarArray: function(){
@@ -24,6 +35,7 @@ new Vue({
             });
            return ordenado;
         }
+        
     }
     
 })
