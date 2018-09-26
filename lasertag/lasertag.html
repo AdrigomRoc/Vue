@@ -2,74 +2,73 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Lasertag con Vue</title>
+        <title>Lasertag with Vue</title>
         <script src="Vue.js"></script>
         <link href="lasertag.css" rel="stylesheet" type="text/css" >
     </head>
     <body>
         <!---------------------------------------------------------MAIN--------------------------------------------------------->
         <div id="app">
-            <div id="Main" v-if="MostrarMain">
-                <h2>Podio</h2>
-                <table id="Podio">
+            <div id="Main" v-if="showMain">
+                <h2>Podium</h2>
+                <table id="Podium">
                     <tr>
-                        <th>Usuario</th>
-                        <th>Partidas</th>
-                        <th>Puntuación</th>
+                        <th>Username</th>
+                        <th>Games</th>
+                        <th>Puntuation</th>
                     </tr>
-                    <tr v-for="jugador in Millors">
-                            <!-- <tr v-for="(campo,index) in ordenarArray"> -->
-                        <td> {{jugador.usuario}}</td>
-                        <td> {{jugador.partidas}}</td>
-                        <td> {{jugador.punts}}</td>
+                    <tr v-for="player in Top">
+                        <td> {{player.username}}</td>
+                        <td> {{player.games}}</td>
+                        <td> {{player.points}}</td>
                     </tr>
                 </table>
                 <br/>
                 <br/>
-                <table class="boton">
+                <table class="button">
                     <tr>
-                        <td><input type="button" v-on:click="MostrarMain=false;MostrarRegistrar=true" value="Registrar Usuario"/></td>
-                        <td><input type="button" v-on:click="MostrarMain=false;MostrarPartida=true" value="Crear partida"/></td>
+                        <td><input type="button" v-on:click="showMain=false;showRegister=true" value="Register Username"/></td>
+                        <td><input type="button" v-on:click="showMain=false;showGame=true" value="Create Game"/></td>
                     </tr>
                 </table> 
             </div>
             <!------------------------------------------------------REGISTRAR------------------------------------------------------->
-            <div id="Registrar" v-if="MostrarRegistrar">
-                <h2>Creación de usarios</h2>
+            <div id="Register" v-if="showRegister">
+                <h2>Creation of users</h2>
                 <br/>
                 <br/>
-                Nombre:<br/>
-                <input type="text" v-model="nuevoUsuario" required/>
-                <br/>Apellido <br/>
+                Name:<br/>
+                <input type="text" v-model="newUsername" required/>
+                <br/>Last name <br/>
                 <input type="text"/>
-                <br/>Correo: <br/>
+                <br/>Email: <br/>
                 <input type="email"/>
                 <hr/>
-                <table class="boton">
+                <table class="button">
                     <tr>
-                        <td><input type="submit" v-on:click="guardarUsuario(nuevoUsuario);MostrarMain=true;MostrarRegistrar=false" value="Registrar"/></td>
-                        <td><input type="submit" v-on:click="MostrarMain=true;MostrarRegistrar=false" value="Tornar al main"/></td>
+                        <td><input type="submit" v-on:click="saveUsername(newUsername);showMain=true;showRegister=false;newUsername=''" value="Register"/></td>
+                        <td><input type="submit" v-on:click="showMain=true;showRegister=false" value="Return to main"/></td>
                     </tr>
                 </table>
             </div>
             <!-------------------------------------------------------PARTIDA-------------------------------------------------------->
-            <div id="Partida" v-if="MostrarPartida">
-                <b>Partida</b>
+            <div id="Game" v-if="showGame">
+                <b>Game</b>
                 <br/>
                
                 <table id="Main">
                     <tr>
                         <td>
-                            Equipo azul:
+                            Team Blue:
                             <div id="teamblue">
                                 <table>
-                                    <tr v-for="Pjugador in blueteam" v-if="Pjugador.equipo === 'blue'">
-                                        <td>
-                                            <input type="button" v-on:click="Pjugador.equipo='red'" value="red"/>
-                                            <input type="button" v-on:click="Pjugador.equipo=null" value="X"/>
+                                    <tr v-for="Pplayer in blueteam" v-if="Pplayer.team === 'blue'">
+                                        <td v-if="regulators">
+                                            <input type="button" v-on:click="Pplayer.team='red'" value="red"/>
+                                            <input type="button" v-on:click="Pplayer.team=null" value="X"/>
                                         </td>
                                         <td>
-                                            {{Pjugador.usuario}}
+                                            {{Pplayer.username}} ({{Pplayer.points}})
                                         </td>
                                     </tr>
                                 </table>
@@ -79,34 +78,45 @@
                             </div>
                         </td>
                         <td>
-                            Todos los jugadores
+                            <span v-if="allPlayers">All playeres</span><span v-if="Score">Score</span>
                             <div id="All">
-                                <table>
-                                    <tr v-for="Pjugador in llista" v-if="Pjugador.equipo == null">
-                                        <td>
-                                            <input type="button" v-on:click="Pjugador.equipo='blue'" value="blue"/>
+                                <table v-if="allPlayers">
+                                    <tr v-for="Pplayer in list" v-if="Pplayer.team == null">
+                                        <td v-if="regulators">
+                                            <input type="button" v-on:click="Pplayer.team='blue'" value="blue"/>
                                         </td>
                                         <td>
-                                            {{Pjugador.usuario}}
+                                            {{Pplayer.username}}
                                         </td>
-                                        <td>
-                                            <input type="button" v-on:click="Pjugador.equipo='red';" value="red"/>
+                                        <td v-if="regulators">
+                                            <input type="button" v-on:click="Pplayer.team='red';" value="red"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <table v-if="Score">
+                                    <tr v-for="(player, key) in redteam">
+                                        <td><input type="text" style="width: 50px;" v-model="blueteam[key].temp_points"></td>
+                                        <td><input type="text" style="width: 50px;" v-model="redteam[key].temp_points"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <button v-on:click="addTempPoints;finish=true">Add points</button>
                                         </td>
                                     </tr>
                                 </table>
                             </div>
                         </td>
                         <td>
-                            Equipo rojo:
+                            Team red:
                             <div id="teamred">
                                     <table>
-                                        <tr v-for="Pjugador in redteam" v-if="Pjugador.equipo === 'red'">
+                                        <tr v-for="Pplayer in redteam" v-if="Pplayer.team === 'red'">
                                             <td>
-                                                {{Pjugador.usuario}}
+                                                {{Pplayer.username}} ({{Pplayer.points}})
                                             </td>
-                                            <td>
-                                                <input type="button" v-on:click="Pjugador.equipo=null" value="X"/>
-                                                <input type="button" v-on:click="Pjugador.equipo='blue'" value="blue"/>
+                                            <td v-if="regulators">
+                                                <input type="button" v-on:click="Pplayer.team=null" value="X"/>
+                                                <input type="button" v-on:click="Pplayer.team='blue'" value="blue"/>
                                             </td>
                                         </tr>
                                     </table>
@@ -118,15 +128,15 @@
                         </td>
                     </tr>
                 </table>
-                <hr id="partida"/>
-                <table class="boton">
+                <hr id="Game"/>
+                <table class="button">
                     <tr>
                         <td>
-                            <input v-if="redteam.length === 5 && blueteam.length===5" v-on:click="" type="submit" v-on:click="EmpezarPartida" value="Empezar"/>
-                            <input v-else type="button" value="Empezar" disabled="disabled"/>
+                            <input v-if="redteam.length === 5 && blueteam.length===5 && hide" v-on:click="regulators=false;hide=false;allPlayers=false;Score=true" type="submit" value="Start"/>
+                            <input v-else type="button" value="Start" disabled="disabled"/>
                         </td>
-                        <td v-if="acabar"><input type="submit" value="Acabar"/></td>
-                        <td><input type="submit"  v-on:click="MostrarMain=true;MostrarPartida=false" value="Tornar al main"/></td>
+                        <td v-if="finish"><input type="submit" value="Finish" v-on:click="finish=false;hide=true;regulators=true;allPlayers=true;Score=false;restartTeams();showMain=true;showGame=false"/></td>
+                        <td><input type="submit"  v-on:click="showMain=true;showGame=false;restartTeams();finish=false;hide=true;regulators=true;allPlayers=true;Score=false" value="Return to main"/></td>
                     </tr>
                 </table>    
             </div>

@@ -7,15 +7,15 @@ div#app>div{
     padding-top: 10px;
     margin-top:10px;
 }
-table#Podio{
+table#Podium{
     margin: 0 auto;
     padding-top: 20px;
 }
-table.boton{
+table.button{
     width: 100%;
 
 }
-div#Registrar>hr{
+div#Register>hr{
     margin-top: 100px;
 }
 #teamred,#teamblue,#All{
@@ -23,7 +23,6 @@ div#Registrar>hr{
     margin: 0 auto;
     width: 100%;
     height: 300px;
-    padding: 5px;
 }
 #teamblue{
     background-color: rgba(93, 209, 255, 0.534);
@@ -34,7 +33,7 @@ div#Registrar>hr{
 #All{
     background-color: rgba(189, 189, 189, 0.411)
 }
-hr.partida{
+hr.Game{
     margin-top: 20px;
 }
 #Main{

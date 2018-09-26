@@ -1,70 +1,89 @@
 new Vue({
     el: '#app',
     data:{
-        llista: [
-            { usuario:'Juan', partidas:5, punts:50, equipo:null},
-            { usuario:'Pedro', partidas:2, punts:20, equipo:null},
-            { usuario:'David', partidas:6, punts:50, equipo:null},
-            { usuario:'Adria', partidas:9, punts:90, equipo:null},
-            { usuario:'Sandra', partidas:3, punts:70, equipo:null},
-            { usuario:'Andres', partidas:3, punts:50, equipo:null},
-            { usuario:'Jofre', partidas:7, punts:30, equipo:null},
-            { usuario:'Gustavo', partidas:5, punts:80, equipo:null},
-            { usuario:'Luis', partidas:0, punts:0, equipo:null},
-            { usuario:'Alfredo', partidas:6, punts:30, equipo:null},
+        list: [
+            { username:'Juan', games:5, points:50, team:null, temp_points: 0},
+            { username:'Pedro', games:2, points:20, team:null, temp_points: 0},
+            { username:'David', games:6, points:50, team:null, temp_points: 0},
+            { username:'Adria', games:9, points:90, team:null, temp_points: 0},
+            { username:'Sandra', games:3, points:70, team:null, temp_points: 0},
+            { username:'Andres', games:3, points:50, team:null, temp_points: 0},
+            { username:'Jofre', games:7, points:30, team:null, temp_points: 0},
+            { username:'Gustavo', games:5, points:80, team:null, temp_points: 0},
+            { username:'Luis', games:0, points:0, team:null, temp_points: 0},
+            { username:'Alfredo', games:6, points:30, team:null, temp_points: 0},
             ],
-            MostrarMain:true,
-            MostrarRegistrar:false,
-            MostrarPartida:false,
-            empezar:false,
-            acabar:false,
-            teamblue:[],
-            teamred:[],
-            num:1
+            showMain:true,
+            showRegister:false,
+            showGame:false,
+            finish:false,
+            regulators:true,
+            hide:true,
+            allPlayers:true,
+            Score:false,
+            newUsername:""
     },
     methods:{
-        EmpezarPartida: function(){
-           
-        },
-        guardarUsuario: function(user){
-            if(user.length>0){
-                this.llista.push({usuario:user,partidas:0,punts:0});
+        saveUsername: function(user){
+            var found=false;
+            if(user.length<0){
+                alert("Error: Write something before adding the username");
             }else{
-                alert("Error: Escribe algo antes de añadir el usuario");
+                for(var i=0;i<this.list.length;i++){
+                    if(user==this.list[i].username){
+                        found=true;
+                    }
+                }
+                if(found){
+                    alert("Error: Existing Username");
+                }else{
+                    this.list.push({username:user,games:0,points:0});
+                }
             }
         },
-
+        addTempPoints: function(){
+            for(var i = 0; i < this.list.length; i++){
+                var player = this.list[i];
+                player.points = parseInt(player.points) + parseInt(player.temp_points);
+                player.temp_points = 0;
+            }
+        },
+        restartTeams: function(){
+            for(var i=0;i<this.list.length;i++){
+                this.list[i].team=null;
+            }
+        }
     },
     computed:{
-        ordenarArray: function(){
-           var ordenado=this.llista.sort(function(a,b){
-                if(a.punts!=b.punts){   
-                    return b.punts > a.punts;
+        orderArray: function(){
+           var ordenado=this.list.sort(function(a,b){
+                if(a.points!=b.points){   
+                    return b.points > a.points;
                 }else{
-                    return a.partidas > b.partidas;
+                    return a.games > b.games;
                 }
             });
            return ordenado;
         },
-        Millors: function(){
-            return this.ordenarArray.slice(0,5);
+        Top: function(){
+            return this.orderArray.slice(0,5);
         },
         redteam: function(){
             var team = [];
-            for(var i = 0 ; i < this.llista.length; i++){
-                var jugador = this.llista[i];
-                if(jugador.equipo === "red"){
-                    team.push(jugador);
+            for(var i = 0 ; i < this.list.length; i++){
+                var player = this.list[i];
+                if(player.team === "red"){
+                    team.push(player);
                 }
             }
             return team;
         },
         blueteam: function(){
             var team = [];
-            for(var i = 0 ; i < this.llista.length; i++){
-                var jugador = this.llista[i];
-                if(jugador.equipo === "blue"){
-                    team.push(jugador);
+            for(var i = 0 ; i < this.list.length; i++){
+                var player = this.list[i];
+                if(player.team === "blue"){
+                    team.push(player);
                 }
             }
             return team;
